@@ -12,8 +12,9 @@ public class HibernateUtil {
     private static SessionFactory buildSessionFactory() {
         try {
             Configuration configuration = new Configuration();
-            configuration.addAnnotatedClass(User.class);
-            return configuration.buildSessionFactory(new StandardServiceRegistryBuilder().build());
+            return configuration.buildSessionFactory(new StandardServiceRegistryBuilder()
+                    .configure("hibernate.cfg.xml")
+                    .build());
         } catch (Exception ex) {
             ex.printStackTrace();
             throw new RuntimeException("Error building Session Factory");
