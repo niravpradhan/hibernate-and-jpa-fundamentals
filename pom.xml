@@ -18,4 +18,8 @@
         <project.reporting.outputEncoding>${encoding}</project.reporting.outputEncoding>
     </properties>
 
+    <modules>
+        <module>simple-setup</module>
+    </modules>
+
 </project>
