@@ -1,7 +1,6 @@
 package me.niravpradhan.data.entities;
 
-import javax.persistence.Access;
-import javax.persistence.AccessType;
+import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -9,46 +8,36 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import java.io.Serializable;
-import java.time.LocalDateTime;
 
 @Entity
-@Table(name="finances_user")
-@Access(AccessType.PROPERTY)
+@Table(name = "user")
 public class User implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    private Long userId;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int id;
 
+    @Basic(optional = false)
+    @Column(name = "first_name")
     private String firstName;
 
+    @Basic(optional = false)
+    @Column(name = "last_name")
     private String lastName;
 
-    private LocalDateTime birthDate;
+    @Basic(optional = false)
+    private String email;
 
-    private String emailAddress;
-
-    private LocalDateTime lastUpdatedDate;
-
-    private String lastUpdatedBy;
-
-    private LocalDateTime createdDate;
-
-    private String createdBy;
-
-    @Id
-    @GeneratedValue(strategy= GenerationType.IDENTITY)
-    @Column(name="USER_ID")
-
-    public Long getUserId() {
-        return userId;
+    public int getId() {
+        return id;
     }
 
-    public void setUserId(Long userId) {
-        this.userId = userId;
+    public void setId(int id) {
+        this.id = id;
     }
 
-    @Column(name="FIRST_NAME")
     public String getFirstName() {
         return firstName;
     }
@@ -57,7 +46,6 @@ public class User implements Serializable {
         this.firstName = firstName;
     }
 
-    @Column(name="LAST_NAME")
     public String getLastName() {
         return lastName;
     }
@@ -66,57 +54,11 @@ public class User implements Serializable {
         this.lastName = lastName;
     }
 
-    @Column(name="BIRTH_DATE")
-    public LocalDateTime getBirthDate() {
-        return birthDate;
+    public String getEmail() {
+        return email;
     }
 
-    public void setBirthDate(LocalDateTime birthDate) {
-        this.birthDate = birthDate;
-    }
-
-    @Column(name="EMAIL_ADDRESS")
-    public String getEmailAddress() {
-        return emailAddress;
-    }
-
-    public void setEmailAddress(String emailAddress) {
-        this.emailAddress = emailAddress;
-    }
-
-    @Column(name="LAST_UPDATED_DATE")
-    public LocalDateTime getLastUpdatedDate() {
-        return lastUpdatedDate;
-    }
-
-    public void setLastUpdatedDate(LocalDateTime lastUpdatedDate) {
-        this.lastUpdatedDate = lastUpdatedDate;
-    }
-
-    @Column(name="LAST_UPDATED_BY")
-    public String getLastUpdatedBy() {
-        return lastUpdatedBy;
-    }
-
-    public void setLastUpdatedBy(String lastUpdatedBy) {
-        this.lastUpdatedBy = lastUpdatedBy;
-    }
-
-    @Column(name="CREATED_DATE")
-    public LocalDateTime getCreatedDate() {
-        return createdDate;
-    }
-
-    public void setCreatedDate(LocalDateTime createdDate) {
-        this.createdDate = createdDate;
-    }
-
-    @Column(name="CREATED_BY")
-    public String getCreatedBy() {
-        return createdBy;
-    }
-
-    public void setCreatedBy(String createdBy) {
-        this.createdBy = createdBy;
+    public void setEmail(String email) {
+        this.email = email;
     }
 }

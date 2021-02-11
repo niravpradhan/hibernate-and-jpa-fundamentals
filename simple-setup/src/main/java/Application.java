@@ -11,14 +11,9 @@ public class Application {
         session.getTransaction().begin();
 
         User user = new User();
-        user.setCreatedBy("Amita");
-        user.setCreatedDate(LocalDateTime.now());
-        user.setLastUpdatedBy("Amita");
-        user.setLastUpdatedDate(LocalDateTime.now());
-        user.setBirthDate(LocalDateTime.now());
-        user.setEmailAddress("amita.pradhan@gmail.com");
-        user.setFirstName("Amita");
+        user.setFirstName("Nirav");
         user.setLastName("Pradhan");
+        user.setEmail("nirav.pradhan@gmail.com");
 
         session.save(user);
 

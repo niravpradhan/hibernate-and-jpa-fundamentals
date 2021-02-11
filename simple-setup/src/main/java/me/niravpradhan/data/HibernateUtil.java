@@ -1,6 +1,5 @@
 package me.niravpradhan.data;
 
-import me.niravpradhan.data.entities.User;
 import org.hibernate.SessionFactory;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.Configuration;
