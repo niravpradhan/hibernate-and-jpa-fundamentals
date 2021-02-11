@@ -1,5 +1,7 @@
 package me.niravpradhan.data.entities;
 
+import javax.persistence.Access;
+import javax.persistence.AccessType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -11,42 +13,32 @@ import java.time.LocalDateTime;
 
 @Entity
 @Table(name="finances_user")
+@Access(AccessType.PROPERTY)
 public class User implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
+    private Long userId;
+
+    private String firstName;
+
+    private String lastName;
+
+    private LocalDateTime birthDate;
+
+    private String emailAddress;
+
+    private LocalDateTime lastUpdatedDate;
+
+    private String lastUpdatedBy;
+
+    private LocalDateTime createdDate;
+
+    private String createdBy;
+
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     @Column(name="USER_ID")
-    private Long userId;
-
-    @Column(name="FIRST_NAME")
-    private String firstName;
-
-    @Column(name="LAST_NAME")
-    private String lastName;
-
-    @Column(name="BIRTH_DATE")
-    private LocalDateTime birthDate;
-
-    @Column(name="EMAIL_ADDRESS")
-    private String emailAddress;
-
-    @Column(name="LAST_UPDATED_DATE")
-    private LocalDateTime lastUpdatedDate;
-
-    @Column(name="LAST_UPDATED_BY")
-    private String lastUpdatedBy;
-
-    @Column(name="CREATED_DATE")
-    private LocalDateTime createdDate;
-
-    @Column(name="CREATED_BY")
-    private String createdBy;
-
-    public static long getSerialVersionUID() {
-        return serialVersionUID;
-    }
 
     public Long getUserId() {
         return userId;
@@ -56,6 +48,7 @@ public class User implements Serializable {
         this.userId = userId;
     }
 
+    @Column(name="FIRST_NAME")
     public String getFirstName() {
         return firstName;
     }
@@ -64,6 +57,7 @@ public class User implements Serializable {
         this.firstName = firstName;
     }
 
+    @Column(name="LAST_NAME")
     public String getLastName() {
         return lastName;
     }
@@ -72,6 +66,7 @@ public class User implements Serializable {
         this.lastName = lastName;
     }
 
+    @Column(name="BIRTH_DATE")
     public LocalDateTime getBirthDate() {
         return birthDate;
     }
@@ -80,6 +75,7 @@ public class User implements Serializable {
         this.birthDate = birthDate;
     }
 
+    @Column(name="EMAIL_ADDRESS")
     public String getEmailAddress() {
         return emailAddress;
     }
@@ -88,6 +84,7 @@ public class User implements Serializable {
         this.emailAddress = emailAddress;
     }
 
+    @Column(name="LAST_UPDATED_DATE")
     public LocalDateTime getLastUpdatedDate() {
         return lastUpdatedDate;
     }
@@ -96,6 +93,7 @@ public class User implements Serializable {
         this.lastUpdatedDate = lastUpdatedDate;
     }
 
+    @Column(name="LAST_UPDATED_BY")
     public String getLastUpdatedBy() {
         return lastUpdatedBy;
     }
@@ -104,6 +102,7 @@ public class User implements Serializable {
         this.lastUpdatedBy = lastUpdatedBy;
     }
 
+    @Column(name="CREATED_DATE")
     public LocalDateTime getCreatedDate() {
         return createdDate;
     }
@@ -112,6 +111,7 @@ public class User implements Serializable {
         this.createdDate = createdDate;
     }
 
+    @Column(name="CREATED_BY")
     public String getCreatedBy() {
         return createdBy;
     }

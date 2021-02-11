@@ -11,13 +11,13 @@ public class Application {
         session.getTransaction().begin();
 
         User user = new User();
-        user.setCreatedBy("Nirav");
+        user.setCreatedBy("Amita");
         user.setCreatedDate(LocalDateTime.now());
-        user.setLastUpdatedBy("Nirav");
+        user.setLastUpdatedBy("Amita");
         user.setLastUpdatedDate(LocalDateTime.now());
         user.setBirthDate(LocalDateTime.now());
-        user.setEmailAddress("nirav.pradhan@gmail.com");
-        user.setFirstName("Nirav");
+        user.setEmailAddress("amita.pradhan@gmail.com");
+        user.setFirstName("Amita");
         user.setLastName("Pradhan");
 
         session.save(user);
