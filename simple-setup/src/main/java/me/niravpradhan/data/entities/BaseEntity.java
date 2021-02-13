@@ -2,10 +2,13 @@ package me.niravpradhan.data.entities;
 
 import javax.persistence.Column;
 import javax.persistence.MappedSuperclass;
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
 @MappedSuperclass
-public abstract class BaseEntity {
+public abstract class BaseEntity implements Serializable {
+
+    private static final long serialVersionUID = 1L;
 
     @Column(name="LAST_UPDATED_DATE")
     private LocalDateTime lastUpdatedDate;

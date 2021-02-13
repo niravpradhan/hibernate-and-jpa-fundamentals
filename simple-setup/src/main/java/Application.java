@@ -1,15 +1,11 @@
 import me.niravpradhan.data.HibernateUtil;
-import me.niravpradhan.data.entities.Address;
-import me.niravpradhan.data.entities.Bank;
-import me.niravpradhan.data.entities.BankContact;
-import me.niravpradhan.data.entities.Credential;
-import me.niravpradhan.data.entities.TimeTest;
-import me.niravpradhan.data.entities.User;
+import me.niravpradhan.data.entities.Account;
+import me.niravpradhan.data.entities.Transaction;
 import org.hibernate.Session;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.Date;
 
 public class Application {
 
@@ -18,39 +14,14 @@ public class Application {
         try {
             session.getTransaction().begin();
 
-            User user = new User();
-            Address address = new Address();
-            //user.setAge(22);
-            user.setBirthDate(LocalDateTime.of(1978, 11, 30, 5, 30, 0));
-            user.setCreatedBy("dilip");
-            user.setCreatedDate(LocalDateTime.now());
-            user.setEmailAddress("dilip.pradhan@gmail.com");
-            user.setFirstName("dilip");
-            user.setLastName("pradhan");
-            user.setLastUpdatedBy("nirav");
-            user.setLastUpdatedDate(LocalDateTime.now());
+            Account account = createAccount();
 
-            address.setAddressLine1("line 1");
-            address.setAddressLine2("line2");
-            address.setCity("Philadelphia");
-            address.setState("PA");
-            address.setZipCode("12345");
-            user.setAddress(address);
+            account.getTransactions().add(createShoesTranction());
+            account.getTransactions().add(createClothsTranction());
 
-            Credential credential = new Credential();
-            credential.setUserName("dilip");
-            credential.setPassword("Password");
-            
-            credential.setUser(user);
-            user.setCredential(credential);
-
-            session.save(credential);
+            session.save(account);
 
             session.getTransaction().commit();
-
-            User dbUser = session.find(User.class, credential.getUser().getUserId());
-            System.out.println(dbUser.getCredential().getUserName());
-
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
@@ -58,5 +29,59 @@ public class Application {
             HibernateUtil.getSessionFactory().close();
         }
 
+    }
+
+    private static Transaction createClothsTranction() {
+        Transaction transaction = new Transaction();
+
+        transaction.setTransactionType("Withdrawal");
+        transaction.setTitle("Title1");
+        transaction.setAmount(new BigDecimal("1000.00"));
+        transaction.setInitialBalance(new BigDecimal("10000.00"));
+        transaction.setClosingBalance(new BigDecimal("9000.00"));
+        transaction.setNotes("Buying Cloths");
+
+        transaction.setCreatedBy("system");
+        transaction.setCreatedDate(LocalDateTime.now());
+        transaction.setLastUpdatedBy("system");
+        transaction.setLastUpdatedDate(LocalDateTime.now());
+
+        return transaction;
+    }
+
+    private static Transaction createShoesTranction() {
+        Transaction transaction = new Transaction();
+
+        transaction.setTransactionType("Withdrawal");
+        transaction.setTitle("Title1");
+        transaction.setAmount(new BigDecimal("1000.00"));
+        transaction.setInitialBalance(new BigDecimal("90000.00"));
+        transaction.setClosingBalance(new BigDecimal("8000.00"));
+        transaction.setNotes("Buying Shoes");
+
+        transaction.setCreatedBy("system");
+        transaction.setCreatedDate(LocalDateTime.now());
+        transaction.setLastUpdatedBy("system");
+        transaction.setLastUpdatedDate(LocalDateTime.now());
+
+        return transaction;
+    }
+
+    private static Account createAccount() {
+        Account account = new Account();
+
+        account.setAccountType("SAVING");
+        account.setName("NIRAV PRADHAN");
+        account.setInitialBalance(new BigDecimal("10000.00"));
+        account.setCurrentBalance(new BigDecimal("10000.00"));
+        account.setOpenDate(LocalDate.of(2021, 2, 13));
+        account.setCloseDate(LocalDate.of(2031, 2, 13));
+
+        account.setCreatedBy("system");
+        account.setCreatedDate(LocalDateTime.now());
+        account.setLastUpdatedBy("system");
+        account.setLastUpdatedDate(LocalDateTime.now());
+
+        return account;
     }
 }

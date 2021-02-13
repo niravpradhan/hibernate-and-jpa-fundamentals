@@ -20,6 +20,8 @@
         <mapping class="me.niravpradhan.data.entities.User"/>
         <mapping class="me.niravpradhan.data.entities.Bank"/>
         <mapping class="me.niravpradhan.data.entities.Credential"/>
+        <mapping class="me.niravpradhan.data.entities.Account"/>
+        <mapping class="me.niravpradhan.data.entities.Transaction"/>
         <mapping class="me.niravpradhan.data.entities.TimeTest"/>
 
     </session-factory>
