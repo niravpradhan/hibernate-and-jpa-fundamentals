@@ -1,6 +1,7 @@
 import me.niravpradhan.data.HibernateUtil;
 import me.niravpradhan.data.entities.Address;
 import me.niravpradhan.data.entities.Bank;
+import me.niravpradhan.data.entities.BankContact;
 import me.niravpradhan.data.entities.TimeTest;
 import me.niravpradhan.data.entities.User;
 import org.hibernate.Session;
@@ -17,7 +18,7 @@ public class Application {
             session.getTransaction().begin();
 
             Bank bank = new Bank();
-            bank.setName("CITI BANK");
+            bank.setName("KOTAK BANK");
             bank.setInternational(true);
 
             bank.setCreatedBy("Nirav");
@@ -25,8 +26,16 @@ public class Application {
             bank.setLastUpdatedBy("Nirav");
             bank.setLastUpdatedDate(LocalDateTime.now());
 
-            bank.getBankContacts().add("Contact1");
-            bank.getBankContacts().add("Contact2");
+            BankContact bankContact1 = new BankContact();
+            bankContact1.setName("Contact1");
+            bankContact1.setPositionType("Position Type1");
+
+            BankContact bankContact2 = new BankContact();
+            bankContact2.setName("Contact2");
+            bankContact2.setPositionType("Position Type2");
+
+            bank.getBankContacts().add(bankContact1);
+            bank.getBankContacts().add(bankContact2);
 
             Address address = new Address();
             address.setAddressLine1("Address Line 1");
