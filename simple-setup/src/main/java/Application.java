@@ -22,10 +22,10 @@ public class Application {
             Address address = new Address();
             //user.setAge(22);
             user.setBirthDate(LocalDateTime.of(1978, 11, 30, 5, 30, 0));
-            user.setCreatedBy("nirav");
+            user.setCreatedBy("dilip");
             user.setCreatedDate(LocalDateTime.now());
-            user.setEmailAddress("nirav.pradhan@gmail.com");
-            user.setFirstName("nirav");
+            user.setEmailAddress("dilip.pradhan@gmail.com");
+            user.setFirstName("dilip");
             user.setLastName("pradhan");
             user.setLastUpdatedBy("nirav");
             user.setLastUpdatedDate(LocalDateTime.now());
@@ -38,13 +38,18 @@ public class Application {
             user.setAddress(address);
 
             Credential credential = new Credential();
-            credential.setUserName("Nirav");
+            credential.setUserName("dilip");
             credential.setPassword("Password");
+            
             credential.setUser(user);
+            user.setCredential(credential);
 
             session.save(credential);
 
             session.getTransaction().commit();
+
+            User dbUser = session.find(User.class, credential.getUser().getUserId());
+            System.out.println(dbUser.getCredential().getUserName());
 
         } catch (Exception e) {
             e.printStackTrace();

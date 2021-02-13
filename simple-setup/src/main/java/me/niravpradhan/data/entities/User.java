@@ -6,6 +6,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import java.io.Serializable;
 import java.time.LocalDateTime;
@@ -35,6 +36,9 @@ public class User extends BaseEntity implements Serializable {
 
     @Embedded
     private Address address;
+
+    @OneToOne(mappedBy = "user")
+    private Credential credential;
 
     public Long getUserId() {
         return userId;
@@ -82,5 +86,13 @@ public class User extends BaseEntity implements Serializable {
 
     public void setAddress(Address address) {
         this.address = address;
+    }
+
+    public Credential getCredential() {
+        return credential;
+    }
+
+    public void setCredential(Credential credential) {
+        this.credential = credential;
     }
 }
