@@ -17,37 +17,9 @@ public class Application {
         try {
             session.getTransaction().begin();
 
-            Bank bank = new Bank();
-            bank.setName("KOTAK BANK");
-            bank.setInternational(true);
+            Bank bank = session.find(Bank.class, 16L);
 
-            bank.setCreatedBy("Nirav");
-            bank.setCreatedDate(LocalDateTime.now());
-            bank.setLastUpdatedBy("Nirav");
-            bank.setLastUpdatedDate(LocalDateTime.now());
-
-            BankContact bankContact1 = new BankContact();
-            bankContact1.setName("Contact1");
-            bankContact1.setPositionType("Position Type1");
-
-            BankContact bankContact2 = new BankContact();
-            bankContact2.setName("Contact2");
-            bankContact2.setPositionType("Position Type2");
-
-            bank.getBankContacts().add(bankContact1);
-            bank.getBankContacts().add(bankContact2);
-
-            Address address = new Address();
-            address.setAddressLine1("Address Line 1");
-            address.setAddressLine2("Address Line 2");
-            address.setCity("IN");
-            address.setState("KR");
-            address.setZipCode("10001");
-            bank.setAddress(address);
-
-            session.save(bank);
-
-            session.getTransaction().commit();
+            bank.getBankContacts().forEach((k, v) -> System.out.printf("%s -> %s%n", k, v));
 
         } catch (Exception e) {
             e.printStackTrace();

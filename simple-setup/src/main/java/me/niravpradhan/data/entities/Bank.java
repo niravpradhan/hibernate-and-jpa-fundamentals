@@ -1,11 +1,9 @@
 package me.niravpradhan.data.entities;
 
-import org.dom4j.Attribute;
-
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
 
 @Entity
 @Table(name = "bank")
@@ -32,11 +30,9 @@ public class Bank extends BaseEntity implements Serializable {
 
     @ElementCollection
     @CollectionTable(name = "bank_contact", joinColumns = {@JoinColumn(name = "BANK_ID")})
-    @AttributeOverrides({
-            @AttributeOverride(name = "name", column = @Column(name = "NAME")),
-            @AttributeOverride(name = "positionType", column = @Column(name = "POSITION_TYPE"))
-    })
-    private Collection<BankContact> bankContacts = new ArrayList<>();
+    @MapKeyColumn(name = "POSITION_TYPE")
+    @Column(name = "NAME")
+    private Map<String, String> bankContacts = new HashMap<>();
 
     public Long getId() {
         return id;
@@ -70,11 +66,11 @@ public class Bank extends BaseEntity implements Serializable {
         isInternational = international;
     }
 
-    public Collection<BankContact> getBankContacts() {
+    public Map<String, String> getBankContacts() {
         return bankContacts;
     }
 
-    public void setBankContacts(Collection<BankContact> bankContacts) {
+    public void setBankContacts(Map<String, String> bankContacts) {
         this.bankContacts = bankContacts;
     }
 }
