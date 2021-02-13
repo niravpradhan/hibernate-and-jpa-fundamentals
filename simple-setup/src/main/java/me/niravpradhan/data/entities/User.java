@@ -1,6 +1,7 @@
 package me.niravpradhan.data.entities;
 
 import javax.persistence.Column;
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -11,7 +12,7 @@ import java.time.LocalDateTime;
 
 @Entity
 @Table(name="finances_user")
-public class User implements Serializable {
+public class User extends BaseEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -32,21 +33,8 @@ public class User implements Serializable {
     @Column(name="EMAIL_ADDRESS")
     private String emailAddress;
 
-    @Column(name="LAST_UPDATED_DATE")
-    private LocalDateTime lastUpdatedDate;
-
-    @Column(name="LAST_UPDATED_BY")
-    private String lastUpdatedBy;
-
-    @Column(name="CREATED_DATE")
-    private LocalDateTime createdDate;
-
-    @Column(name="CREATED_BY")
-    private String createdBy;
-
-    public static long getSerialVersionUID() {
-        return serialVersionUID;
-    }
+    @Embedded
+    private Address address;
 
     public Long getUserId() {
         return userId;
@@ -88,35 +76,11 @@ public class User implements Serializable {
         this.emailAddress = emailAddress;
     }
 
-    public LocalDateTime getLastUpdatedDate() {
-        return lastUpdatedDate;
+    public Address getAddress() {
+        return address;
     }
 
-    public void setLastUpdatedDate(LocalDateTime lastUpdatedDate) {
-        this.lastUpdatedDate = lastUpdatedDate;
-    }
-
-    public String getLastUpdatedBy() {
-        return lastUpdatedBy;
-    }
-
-    public void setLastUpdatedBy(String lastUpdatedBy) {
-        this.lastUpdatedBy = lastUpdatedBy;
-    }
-
-    public LocalDateTime getCreatedDate() {
-        return createdDate;
-    }
-
-    public void setCreatedDate(LocalDateTime createdDate) {
-        this.createdDate = createdDate;
-    }
-
-    public String getCreatedBy() {
-        return createdBy;
-    }
-
-    public void setCreatedBy(String createdBy) {
-        this.createdBy = createdBy;
+    public void setAddress(Address address) {
+        this.address = address;
     }
 }
