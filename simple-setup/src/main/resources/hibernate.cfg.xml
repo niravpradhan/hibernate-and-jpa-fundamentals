@@ -18,6 +18,7 @@
         <property name="show_sql">true</property>
 
         <mapping class="me.niravpradhan.data.entities.User"/>
+        <mapping class="me.niravpradhan.data.entities.Bank"/>
         <mapping class="me.niravpradhan.data.entities.TimeTest"/>
 
     </session-factory>

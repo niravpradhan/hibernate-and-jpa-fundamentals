@@ -1,5 +1,6 @@
 import me.niravpradhan.data.HibernateUtil;
 import me.niravpradhan.data.entities.Address;
+import me.niravpradhan.data.entities.Bank;
 import me.niravpradhan.data.entities.TimeTest;
 import me.niravpradhan.data.entities.User;
 import org.hibernate.Session;
@@ -15,27 +16,29 @@ public class Application {
         try {
             session.getTransaction().begin();
 
-            User user = new User();
+            Bank bank = new Bank();
+            bank.setName("CITI BANK");
+            bank.setInternational(true);
+
+            bank.setCreatedBy("Nirav");
+            bank.setCreatedDate(LocalDateTime.now());
+            bank.setLastUpdatedBy("Nirav");
+            bank.setLastUpdatedDate(LocalDateTime.now());
+
+            bank.getBankContacts().add("Contact1");
+            bank.getBankContacts().add("Contact2");
+
             Address address = new Address();
-            //user.setAge(22);
-            user.setBirthDate(LocalDateTime.of(1978, 11, 30, 5, 30, 0));
-            user.setCreatedBy("nirav");
-            user.setCreatedDate(LocalDateTime.now());
-            user.setEmailAddress("nirav.pradhan@gmail.com");
-            user.setFirstName("nirav");
-            user.setLastName("pradhan");
-            user.setLastUpdatedBy("nirav");
-            user.setLastUpdatedDate(LocalDateTime.now());
+            address.setAddressLine1("Address Line 1");
+            address.setAddressLine2("Address Line 2");
+            address.setCity("IN");
+            address.setState("KR");
+            address.setZipCode("10001");
+            bank.setAddress(address);
 
-            address.setAddressLine1("line 1");
-            address.setAddressLine2("line2");
-            address.setCity("Philadelphia");
-            address.setState("PA");
-            address.setZipCode("12345");
-            user.setAddress(address);
+            session.save(bank);
 
-            session.save(user);
-
+            session.getTransaction().commit();
 
         } catch (Exception e) {
             e.printStackTrace();
