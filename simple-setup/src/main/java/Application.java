@@ -1,95 +1,128 @@
 import me.niravpradhan.data.HibernateUtil;
 import me.niravpradhan.data.entities.Account;
-import me.niravpradhan.data.entities.Budget;
+import me.niravpradhan.data.entities.Address;
+import me.niravpradhan.data.entities.Credential;
 import me.niravpradhan.data.entities.Transaction;
+import me.niravpradhan.data.entities.User;
 import org.hibernate.Session;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.Arrays;
 
 public class Application {
 
     public static void main(String[] args) {
         Session session = HibernateUtil.getSessionFactory().openSession();
+
         try {
-            session.getTransaction().begin();
+            session.beginTransaction();
 
-            Account account = createAccount();
+            Account account = createNewAccount();
+            Account account2 = createNewAccount();
+            User user = createUser();
+            User user2 = createUser();
 
-            Budget budget = new Budget();
-            budget.setGoalAmount(new BigDecimal("10000.00"));
-            budget.setPeriod("YEAR");
-            budget.setName("2021 Budget");
+            account.getUsers().add(user);
+            account.getUsers().add(user2);
+            account2.getUsers().add(user);
+            account2.getUsers().add(user2);
 
-            budget.getTransactions().add(createShoesTranction(account));
-            budget.getTransactions().add(createClothsTranction(account));
-
-            session.save(budget);
+            session.save(account);
+            session.save(account2);
 
             session.getTransaction().commit();
+
+            Account dbAccount = session.get(Account.class, account.getAccountId());
+            System.out.println(dbAccount.getUsers().iterator().next().getEmailAddress());
         } catch (Exception e) {
             e.printStackTrace();
-        } finally {
+        }finally{
             session.close();
             HibernateUtil.getSessionFactory().close();
         }
-
     }
 
-    private static Transaction createClothsTranction(Account account) {
-        Transaction transaction = new Transaction();
-
-        transaction.setAccount(account);
-        transaction.setTransactionType("Withdrawal");
-        transaction.setTitle("Title1");
-        transaction.setAmount(new BigDecimal("1000.00"));
-        transaction.setInitialBalance(new BigDecimal("10000.00"));
-        transaction.setClosingBalance(new BigDecimal("9000.00"));
-        transaction.setNotes("Buying Cloths");
-
-        transaction.setCreatedBy("system");
-        transaction.setCreatedDate(LocalDateTime.now());
-        transaction.setLastUpdatedBy("system");
-        transaction.setLastUpdatedDate(LocalDateTime.now());
-
-        return transaction;
+    private static User createUser() {
+        User user = new User();
+        Address address = createAddress();
+        user.setAddresses(Arrays.asList(new Address[]{createAddress()}));
+        user.setBirthDate(LocalDateTime.now());
+        user.setCreatedBy("Kevin Bowersox");
+        user.setCreatedDate(LocalDateTime.now());
+        user.setCredential(createCredential(user));
+        user.setEmailAddress("test@test.com");
+        user.setFirstName("John");
+        user.setLastName("Doe");
+        user.setLastUpdatedBy("system");
+        user.setLastUpdatedDate(LocalDateTime.now());
+        return user;
     }
 
-    private static Transaction createShoesTranction(Account account) {
-        Transaction transaction = new Transaction();
-
-        transaction.setAccount(account);
-        transaction.setTransactionType("Withdrawal");
-        transaction.setTitle("Title1");
-        transaction.setAmount(new BigDecimal("1000.00"));
-        transaction.setInitialBalance(new BigDecimal("9000.00"));
-        transaction.setClosingBalance(new BigDecimal("8000.00"));
-        transaction.setNotes("Buying Shoes");
-
-        transaction.setCreatedBy("system");
-        transaction.setCreatedDate(LocalDateTime.now());
-        transaction.setLastUpdatedBy("system");
-        transaction.setLastUpdatedDate(LocalDateTime.now());
-
-        return transaction;
+    private static Credential createCredential(User user) {
+        Credential credential = new Credential();
+        credential.setUser(user);
+        credential.setUserName("test_username");
+        credential.setPassword("test_password");
+        return credential;
     }
 
-    private static Account createAccount() {
+    private static Address createAddress() {
+        Address address = new Address();
+        address.setAddressLine1("101 Address Line");
+        address.setAddressLine2("102 Address Line");
+        address.setCity("New York");
+        address.setState("PA");
+        address.setZipCode("10000");
+        address.setAddressType("PRIMARY");
+        return address;
+    }
+
+    private static Transaction createNewBeltPurchase(Account account) {
+        Transaction beltPurchase = new Transaction();
+        beltPurchase.setAccount(account);
+        beltPurchase.setTitle("Dress Belt");
+        beltPurchase.setAmount(new BigDecimal("50.00"));
+        beltPurchase.setClosingBalance(new BigDecimal("0.00"));
+        beltPurchase.setCreatedBy("Kevin Bowersox");
+        beltPurchase.setCreatedDate(LocalDateTime.now());
+        beltPurchase.setInitialBalance(new BigDecimal("0.00"));
+        beltPurchase.setLastUpdatedBy("Kevin Bowersox");
+        beltPurchase.setLastUpdatedDate(LocalDateTime.now());
+        beltPurchase.setNotes("New Dress Belt");
+        beltPurchase.setTransactionType("Debit");
+        return beltPurchase;
+    }
+
+    private static Transaction createShoePurchase(Account account) {
+        Transaction shoePurchase = new Transaction();
+        shoePurchase.setAccount(account);
+        shoePurchase.setTitle("Work Shoes");
+        shoePurchase.setAmount(new BigDecimal("100.00"));
+        shoePurchase.setClosingBalance(new BigDecimal("0.00"));
+        shoePurchase.setCreatedBy("Kevin Bowersox");
+        shoePurchase.setCreatedDate(LocalDateTime.now());
+        shoePurchase.setInitialBalance(new BigDecimal("0.00"));
+        shoePurchase.setLastUpdatedBy("Kevin Bowersox");
+        shoePurchase.setLastUpdatedDate(LocalDateTime.now());
+        shoePurchase.setNotes("Nice Pair of Shoes");
+        shoePurchase.setTransactionType("Debit");
+        return shoePurchase;
+    }
+
+    private static Account createNewAccount() {
         Account account = new Account();
-
-        account.setAccountType("SAVING");
-        account.setName("NIRAV PRADHAN");
-        account.setInitialBalance(new BigDecimal("10000.00"));
-        account.setCurrentBalance(new BigDecimal("10000.00"));
-        account.setOpenDate(LocalDate.of(2021, 2, 13));
-        account.setCloseDate(LocalDate.of(2031, 2, 13));
-
-        account.setCreatedBy("system");
-        account.setCreatedDate(LocalDateTime.now());
-        account.setLastUpdatedBy("system");
+        account.setCloseDate(LocalDate.now());
+        account.setOpenDate(LocalDate.now());
+        account.setCreatedBy("Kevin Bowersox");
+        account.setInitialBalance(new BigDecimal("50.00"));
+        account.setName("Savings Account");
+        account.setCurrentBalance(new BigDecimal("100.00"));
+        account.setLastUpdatedBy("Kevin Bowersox");
         account.setLastUpdatedDate(LocalDateTime.now());
-
+        account.setCreatedDate(LocalDateTime.now());
         return account;
     }
+
 }
