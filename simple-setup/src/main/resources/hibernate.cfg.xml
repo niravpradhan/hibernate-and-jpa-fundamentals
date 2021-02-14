@@ -22,6 +22,7 @@
         <mapping class="me.niravpradhan.data.entities.Credential"/>
         <mapping class="me.niravpradhan.data.entities.Account"/>
         <mapping class="me.niravpradhan.data.entities.Transaction"/>
+        <mapping class="me.niravpradhan.data.entities.Budget"/>
         <mapping class="me.niravpradhan.data.entities.TimeTest"/>
 
     </session-factory>

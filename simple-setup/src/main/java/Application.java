@@ -1,5 +1,6 @@
 import me.niravpradhan.data.HibernateUtil;
 import me.niravpradhan.data.entities.Account;
+import me.niravpradhan.data.entities.Budget;
 import me.niravpradhan.data.entities.Transaction;
 import org.hibernate.Session;
 
@@ -16,15 +17,17 @@ public class Application {
 
             Account account = createAccount();
 
-            account.getTransactions().add(createShoesTranction(account));
-            account.getTransactions().add(createClothsTranction(account));
+            Budget budget = new Budget();
+            budget.setGoalAmount(new BigDecimal("10000.00"));
+            budget.setPeriod("YEAR");
+            budget.setName("2021 Budget");
 
-            session.save(account);
+            budget.getTransactions().add(createShoesTranction(account));
+            budget.getTransactions().add(createClothsTranction(account));
+
+            session.save(budget);
 
             session.getTransaction().commit();
-
-            Transaction dbTransaction = session.get(Transaction.class, account.getTransactions().get(0).getTransactionId());
-            System.out.println(dbTransaction.getNotes());
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
