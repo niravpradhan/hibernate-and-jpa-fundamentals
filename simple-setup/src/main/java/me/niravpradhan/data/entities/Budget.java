@@ -28,7 +28,7 @@ public class Budget implements Serializable {
 
     @OneToMany(cascade = CascadeType.ALL)
     @JoinTable(name = "budget_transaction", joinColumns = @JoinColumn(name = "BUDGET_ID"),
-    inverseJoinColumns = @JoinColumn(name = "TRANSACTION_ID"))
+        inverseJoinColumns = @JoinColumn(name = "TRANSACTION_ID"))
     private List<Transaction> transactions = new ArrayList<>();
 
     public Long getBugdetId() {
