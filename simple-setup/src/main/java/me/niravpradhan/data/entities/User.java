@@ -4,7 +4,9 @@ import javax.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name="finances_user")
@@ -16,6 +18,9 @@ public class User extends BaseEntity implements Serializable {
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     @Column(name="USER_ID")
     private Long userId;
+
+    @ManyToMany(cascade = CascadeType.ALL, mappedBy = "users")
+    private Set<Account> accounts = new HashSet<>();
 
     @Column(name="FIRST_NAME")
     private String firstName;
@@ -46,6 +51,14 @@ public class User extends BaseEntity implements Serializable {
 
     public void setUserId(Long userId) {
         this.userId = userId;
+    }
+
+    public Set<Account> getAccounts() {
+        return accounts;
+    }
+
+    public void setAccounts(Set<Account> accounts) {
+        this.accounts = accounts;
     }
 
     public String getFirstName() {
