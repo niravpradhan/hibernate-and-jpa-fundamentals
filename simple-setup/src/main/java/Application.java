@@ -16,12 +16,15 @@ public class Application {
 
             Account account = createAccount();
 
-            account.getTransactions().add(createShoesTranction());
-            account.getTransactions().add(createClothsTranction());
+            account.getTransactions().add(createShoesTranction(account));
+            account.getTransactions().add(createClothsTranction(account));
 
             session.save(account);
 
             session.getTransaction().commit();
+
+            Transaction dbTransaction = session.get(Transaction.class, account.getTransactions().get(0).getTransactionId());
+            System.out.println(dbTransaction.getNotes());
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
@@ -31,9 +34,10 @@ public class Application {
 
     }
 
-    private static Transaction createClothsTranction() {
+    private static Transaction createClothsTranction(Account account) {
         Transaction transaction = new Transaction();
 
+        transaction.setAccount(account);
         transaction.setTransactionType("Withdrawal");
         transaction.setTitle("Title1");
         transaction.setAmount(new BigDecimal("1000.00"));
@@ -49,13 +53,14 @@ public class Application {
         return transaction;
     }
 
-    private static Transaction createShoesTranction() {
+    private static Transaction createShoesTranction(Account account) {
         Transaction transaction = new Transaction();
 
+        transaction.setAccount(account);
         transaction.setTransactionType("Withdrawal");
         transaction.setTitle("Title1");
         transaction.setAmount(new BigDecimal("1000.00"));
-        transaction.setInitialBalance(new BigDecimal("90000.00"));
+        transaction.setInitialBalance(new BigDecimal("9000.00"));
         transaction.setClosingBalance(new BigDecimal("8000.00"));
         transaction.setNotes("Buying Shoes");
 

@@ -35,8 +35,7 @@ public class Account extends BaseEntity {
     @Column(name = "CLOSE_DATE")
     private LocalDate closeDate;
 
-    @OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn(name = "ACCOUNT_ID", nullable = false)
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "account")
     private List<Transaction> transactions = new ArrayList<>();
 
     public Long getAccountId() {
