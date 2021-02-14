@@ -4,9 +4,7 @@ import javax.persistence.*;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 @Entity
 @Table(name = "account")
@@ -18,11 +16,6 @@ public class Account extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ACCOUNT_ID")
     private Long accountId;
-
-    @ManyToMany(cascade = CascadeType.ALL)
-    @JoinTable(name = "user_account", joinColumns = @JoinColumn(name = "ACCOUNT_ID"),
-        inverseJoinColumns = @JoinColumn(name = "USER_ID"))
-    private Set<User> users = new HashSet<>();
 
     @Column(name = "ACCOUNT_TYPE")
     private String accountType;
@@ -107,13 +100,5 @@ public class Account extends BaseEntity {
 
     public void setTransactions(List<Transaction> transactions) {
         this.transactions = transactions;
-    }
-
-    public Set<User> getUsers() {
-        return users;
-    }
-
-    public void setUsers(Set<User> users) {
-        this.users = users;
     }
 }

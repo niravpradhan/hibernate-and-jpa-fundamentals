@@ -1,10 +1,15 @@
 package me.niravpradhan.data.entities;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Embedded;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.OneToOne;
+import javax.persistence.Table;
 import java.io.Serializable;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
 
 @Entity
 @Table(name="finances_user")
@@ -29,13 +34,8 @@ public class User extends BaseEntity implements Serializable {
     @Column(name="EMAIL_ADDRESS")
     private String emailAddress;
 
-    @ElementCollection
-    @CollectionTable(name = "user_address", joinColumns = @JoinColumn(name = "USER_ID"))
-    @AttributeOverrides({
-            @AttributeOverride(name = "addressLine1", column = @Column(name = "USER_ADDRESS_LINE_1")),
-            @AttributeOverride(name = "addressLine2", column = @Column(name = "USER_ADDRESS_LINE_2")) })
-    private List<Address> addresses = new ArrayList<Address>();
-
+    @Embedded
+    private Address address;
 
     @OneToOne(mappedBy = "user")
     private Credential credential;
@@ -80,12 +80,12 @@ public class User extends BaseEntity implements Serializable {
         this.emailAddress = emailAddress;
     }
 
-    public List<Address> getAddresses() {
-        return addresses;
+    public Address getAddress() {
+        return address;
     }
 
-    public void setAddresses(List<Address> addresses) {
-        this.addresses = addresses;
+    public void setAddress(Address address) {
+        this.address = address;
     }
 
     public Credential getCredential() {
