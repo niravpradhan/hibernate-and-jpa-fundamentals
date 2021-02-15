@@ -22,11 +22,11 @@ public class Application {
 
             Bank bank = session.get(Bank.class, 1L);
 
-            bank.setName("New Hope Bank");
-            bank.setLastUpdatedBy("Kevin Bowersox");
-            bank.setLastUpdatedDate(LocalDateTime.now());
+            System.out.println(session.contains(bank));
+            session.remove(bank);
+            System.out.println("Method invokied");
+            System.out.println(session.contains(bank));
 
-            System.out.println(bank.getName());
             transaction.commit();
         } catch (Exception e) {
             e.printStackTrace();
