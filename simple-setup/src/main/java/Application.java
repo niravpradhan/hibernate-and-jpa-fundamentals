@@ -20,32 +20,17 @@ public class Application {
         try {
             org.hibernate.Transaction transaction = session.beginTransaction();
 
-            // scenario - 1
-            // Bank bank = (Bank) session.get(Bank.class, 1L);
-            // System.out.println("Method Executed");
+            Bank bank = session.get(Bank.class, 1L);
 
-            // scenario - 2
-            /*Bank bank = session.get(Bank.class, 1L);
-            bank = session.get(Bank.class, 1L);
-            System.out.println("Method Executed");*/
-
-            // Scenario - 3
-            /*Bank bank = session.get(Bank.class, 123L);
-            System.out.println("Method Executed");*/
-
-            // Scenario - 4
-            /*Bank bank = session.load(Bank.class, 1L);
-            System.out.println("Method Executed");*/
-
-            // Scenario - 5
-            Bank bank = session.load(Bank.class, 123L);
-            System.out.println("Method Executed");
+            bank.setName("New Hope Bank");
+            bank.setLastUpdatedBy("Kevin Bowersox");
+            bank.setLastUpdatedDate(LocalDateTime.now());
 
             System.out.println(bank.getName());
             transaction.commit();
         } catch (Exception e) {
             e.printStackTrace();
-        }finally{
+        } finally {
             session.close();
             HibernateUtil.getSessionFactory().close();
         }
