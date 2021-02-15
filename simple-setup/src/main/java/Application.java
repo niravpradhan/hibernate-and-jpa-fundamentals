@@ -1,6 +1,7 @@
 import me.niravpradhan.data.HibernateUtil;
 import me.niravpradhan.data.entities.Account;
 import me.niravpradhan.data.entities.Address;
+import me.niravpradhan.data.entities.Bank;
 import me.niravpradhan.data.entities.Credential;
 import me.niravpradhan.data.entities.Transaction;
 import me.niravpradhan.data.entities.User;
@@ -16,49 +17,56 @@ public class Application {
     public static void main(String[] args) {
         Session session = HibernateUtil.getSessionFactory().openSession();
 
-        Account account = createNewAccount();
-        Transaction trans1 = createNewBeltPurchase(account);
-        Transaction trans2 = createShoePurchase(account);
-        account.getTransactions().add(trans1);
-        account.getTransactions().add(trans2);
-
-        System.out.println(session.contains(account));
-        System.out.println(session.contains(trans1));
-        System.out.println(session.contains(trans2));
-
         try {
             org.hibernate.Transaction transaction = session.beginTransaction();
-            session.save(account);
 
-            System.out.println(session.contains(account));
-            System.out.println(session.contains(trans1));
-            System.out.println(session.contains(trans2));
+            // scenario - 1
+            // Bank bank = (Bank) session.get(Bank.class, 1L);
+            // System.out.println("Method Executed");
 
+            // scenario - 2
+            /*Bank bank = session.get(Bank.class, 1L);
+            bank = session.get(Bank.class, 1L);
+            System.out.println("Method Executed");*/
+
+            // Scenario - 3
+            /*Bank bank = session.get(Bank.class, 123L);
+            System.out.println("Method Executed");*/
+
+            // Scenario - 4
+            /*Bank bank = session.load(Bank.class, 1L);
+            System.out.println("Method Executed");*/
+
+            // Scenario - 5
+            Bank bank = session.load(Bank.class, 123L);
+            System.out.println("Method Executed");
+
+            System.out.println(bank.getName());
             transaction.commit();
         } catch (Exception e) {
             e.printStackTrace();
-        } finally {
+        }finally{
             session.close();
             HibernateUtil.getSessionFactory().close();
         }
     }
 
-//    private static Bank createBank() {
-//        Bank bank = new Bank();
-//        bank.setName("First United Federal");
-//        bank.setAddressLine1("103 Washington Plaza");
-//        bank.setAddressLine2("Suite 332");
-//        bank.setAddressType("PRIMARY");
-//        bank.setCity("New York");
-//        bank.setCreatedBy("Kevin Bowersox");
-//        bank.setCreatedDate(LocalDateTime.now());
-//        bank.setInternational(false);
-//        bank.setLastUpdatedBy("Kevin Bowersox");
-//        bank.setLastUpdatedDate(LocalDateTime.now());
-//        bank.setState("NY");
-//        bank.setZipCode("10000");
-//        return bank;
-//    }
+    /*private static Bank createBank() {
+        Bank bank = new Bank();
+        bank.setName("First United Federal");
+        bank.setAddressLine1("103 Washington Plaza");
+        bank.setAddressLine2("Suite 332");
+        bank.setAddressType("PRIMARY");
+        bank.setCity("New York");
+        bank.setCreatedBy("Kevin Bowersox");
+        bank.setCreatedDate(LocalDateTime.now());
+        bank.setInternational(false);
+        bank.setLastUpdatedBy("Kevin Bowersox");
+        bank.setLastUpdatedDate(LocalDateTime.now());
+        bank.setState("NY");
+        bank.setZipCode("10000");
+        return bank;
+    }*/
 
     private static User createUser() {
         User user = new User();
