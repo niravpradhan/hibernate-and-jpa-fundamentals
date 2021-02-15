@@ -16,32 +16,25 @@ public class Application {
     public static void main(String[] args) {
         Session session = HibernateUtil.getSessionFactory().openSession();
 
+        Account account = createNewAccount();
+        Transaction trans1 = createNewBeltPurchase(account);
+        Transaction trans2 = createShoePurchase(account);
+        account.getTransactions().add(trans1);
+        account.getTransactions().add(trans2);
+
+        System.out.println(session.contains(account));
+        System.out.println(session.contains(trans1));
+        System.out.println(session.contains(trans2));
+
         try {
-            session.beginTransaction();
+            org.hibernate.Transaction transaction = session.beginTransaction();
+            session.save(account);
 
-            Account account = createNewAccount();
-            Account account2 = createNewAccount();
-            User user = createUser();
-            User user2 = createUser();
+            System.out.println(session.contains(account));
+            System.out.println(session.contains(trans1));
+            System.out.println(session.contains(trans2));
 
-            account.getUsers().add(user);
-            account.getUsers().add(user2);
-            user.getAccounts().add(account);
-            user2.getAccounts().add(account);
-
-            account2.getUsers().add(user);
-            account2.getUsers().add(user2);
-            user.getAccounts().add(account2);
-            user2.getAccounts().add(account2);
-
-            session.save(user);
-            session.save(user2);
-
-            session.getTransaction().commit();
-
-            User dbUser = (User) session.get(User.class, user.getUserId());
-            System.out.println(dbUser.getAccounts().iterator().next().getName());
-
+            transaction.commit();
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
@@ -49,6 +42,23 @@ public class Application {
             HibernateUtil.getSessionFactory().close();
         }
     }
+
+//    private static Bank createBank() {
+//        Bank bank = new Bank();
+//        bank.setName("First United Federal");
+//        bank.setAddressLine1("103 Washington Plaza");
+//        bank.setAddressLine2("Suite 332");
+//        bank.setAddressType("PRIMARY");
+//        bank.setCity("New York");
+//        bank.setCreatedBy("Kevin Bowersox");
+//        bank.setCreatedDate(LocalDateTime.now());
+//        bank.setInternational(false);
+//        bank.setLastUpdatedBy("Kevin Bowersox");
+//        bank.setLastUpdatedDate(LocalDateTime.now());
+//        bank.setState("NY");
+//        bank.setZipCode("10000");
+//        return bank;
+//    }
 
     private static User createUser() {
         User user = new User();
@@ -132,4 +142,3 @@ public class Application {
     }
 
 }
-
