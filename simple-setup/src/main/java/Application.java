@@ -13,26 +13,34 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Arrays;
+import java.util.Map;
 
 public class Application {
 
     public static void main(String[] args) {
 
-        EntityManagerFactory emf = Persistence.createEntityManagerFactory("infinite-finances");
-        EntityManager em = emf.createEntityManager();
+        EntityManagerFactory factory = null;
+        EntityManager em = null;
+        EntityTransaction tx = null;
 
-        EntityTransaction tx = em.getTransaction();
+        try {
+            factory = Persistence.createEntityManagerFactory("infinite-finances");
+            em = factory.createEntityManager();
+            tx = em.getTransaction();
 
-        tx.begin();
+            tx.begin();
 
-        Bank bank = createBank();
+            Bank bank = createBank();
+            em.persist(bank);
 
-        em.persist(bank);
-
-        tx.commit();
-
-        em.close();
-        emf.close();
+            tx.commit();
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            tx.rollback();
+        } finally {
+            em.close();
+            factory.close();
+        }
 
     }
 
