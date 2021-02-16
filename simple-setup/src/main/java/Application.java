@@ -30,8 +30,25 @@ public class Application {
 
             tx.begin();
 
-            Bank bank = createBank();
-            em.persist(bank);
+            // Scenario - 1
+            /*Bank bank = em.find(Bank.class, 1L);
+            System.out.println(em.contains(bank));
+            System.out.println(bank.getName());*/
+
+            // Scenarion - 2
+            /*Bank bank = em.find(Bank.class, 12L);
+            System.out.println(em.contains(bank));
+            System.out.println(bank.getName());*/
+
+            // Scenarion - 3
+            /*Bank bank = em.getReference(Bank.class, 1L);
+            System.out.println(em.contains(bank));
+            System.out.println(bank.getName());*/
+
+            // Scenarion - 4
+            Bank bank = em.getReference(Bank.class, 12L);
+            System.out.println(em.contains(bank));
+            System.out.println(bank.getName());
 
             tx.commit();
         } catch (Exception ex) {
