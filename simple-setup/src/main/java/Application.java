@@ -1,12 +1,14 @@
-import me.niravpradhan.data.HibernateUtil;
 import me.niravpradhan.data.entities.Account;
 import me.niravpradhan.data.entities.Address;
 import me.niravpradhan.data.entities.Bank;
 import me.niravpradhan.data.entities.Credential;
 import me.niravpradhan.data.entities.Transaction;
 import me.niravpradhan.data.entities.User;
-import org.hibernate.Session;
 
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.EntityTransaction;
+import javax.persistence.Persistence;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -15,28 +17,24 @@ import java.util.Arrays;
 public class Application {
 
     public static void main(String[] args) {
-        Session session = HibernateUtil.getSessionFactory().openSession();
-        org.hibernate.Transaction transaction = session.beginTransaction();
-        try {
-            Bank bank = session.get(Bank.class, 1L);
-            bank.setName("Something Different");
-            System.out.println("Calling Flush");
-            session.flush();
 
-            bank.getAddress().setAddressLine1("Another Address Line");
-            Bank bank2 = session.get(Bank.class, 2L);
-            bank2.setName("Bank Of Baroda");
-            System.out.println("Calling commit");
-            transaction.commit();
-        } catch (Exception e) {
-            transaction.rollback();
-            e.printStackTrace();
-        } finally {
-            session.close();
-            HibernateUtil.getSessionFactory().close();
-        }
+        EntityManagerFactory emf = Persistence.createEntityManagerFactory("infinite-finances");
+        EntityManager em = emf.createEntityManager();
+
+        EntityTransaction tx = em.getTransaction();
+
+        tx.begin();
+
+        Bank bank = createBank();
+
+        em.persist(bank);
+
+        tx.commit();
+
+        em.close();
+        emf.close();
+
     }
-
 
     private static Bank createBank() {
         Bank bank = new Bank();
