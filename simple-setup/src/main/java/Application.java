@@ -31,7 +31,9 @@ public class Application {
             tx.begin();
 
             Bank bank = em.find(Bank.class, 1L);
-            bank.setName("BANK OF BARODA");
+            System.out.println(em.contains(bank));
+            em.remove(bank);
+            System.out.println(em.contains(bank));
 
             tx.commit();
         } catch (Exception ex) {
