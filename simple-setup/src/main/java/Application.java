@@ -31,9 +31,15 @@ public class Application {
             tx.begin();
 
             Bank bank = em.find(Bank.class, 1L);
+            em.detach(bank);
             System.out.println(em.contains(bank));
-            em.remove(bank);
-            System.out.println(em.contains(bank));
+
+            bank.setName("Something else");
+            Bank bank2 = em.merge(bank);
+
+            System.out.println("Bank Name: " + bank2.getName());
+
+            bank.setName("Something else 2");
 
             tx.commit();
         } catch (Exception ex) {
