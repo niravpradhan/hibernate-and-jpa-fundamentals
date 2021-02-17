@@ -25,7 +25,8 @@ public class Account extends BaseEntity {
     private Set<User> users = new HashSet<>();
 
     @Column(name = "ACCOUNT_TYPE")
-    private String accountType;
+    @Enumerated(EnumType.STRING)
+    private AccountType accountType;
 
     @Column(name = "NAME")
     private String name;
@@ -53,11 +54,11 @@ public class Account extends BaseEntity {
         this.accountId = accountId;
     }
 
-    public String getAccountType() {
+    public AccountType getAccountType() {
         return accountType;
     }
 
-    public void setAccountType(String accountType) {
+    public void setAccountType(AccountType accountType) {
         this.accountType = accountType;
     }
 

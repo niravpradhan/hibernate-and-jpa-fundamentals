@@ -1,5 +1,6 @@
 import me.niravpradhan.data.HibernateUtil;
 import me.niravpradhan.data.entities.Account;
+import me.niravpradhan.data.entities.AccountType;
 import me.niravpradhan.data.entities.Address;
 import me.niravpradhan.data.entities.Bank;
 import me.niravpradhan.data.entities.Credential;
@@ -28,20 +29,13 @@ public class Application {
             session = factory.openSession();
             tx = session.beginTransaction();
 
-            Currency currency = session.load(Currency.class, new CurrencyId("RUPEE", "INDIA"));
-
-            Market market = new Market();
-            market.setMarketName("Bombay Stock Exchange");
-            market.setCurrency(currency);
-
-            currency.getMarkets().add(market);
-
-            session.save(market);
+            Account account = createNewAccount();
+            session.save(account);
 
             tx.commit();
 
-            Currency currency2 = market.getCurrency();
-            System.out.println("SYMBOL: " + currency2.getSymbol());
+            Account dbAccount = session.get(Account.class, account.getAccountId());
+            System.out.println("Account Type: " + dbAccount.getAccountType());
 
         } catch (Exception e) {
             tx.rollback();
@@ -152,6 +146,7 @@ public class Application {
         account.setLastUpdatedBy("Kevin Bowersox");
         account.setLastUpdatedDate(LocalDateTime.now());
         account.setCreatedDate(LocalDateTime.now());
+        account.setAccountType(AccountType.SAVINGS);
         return account;
     }
 
