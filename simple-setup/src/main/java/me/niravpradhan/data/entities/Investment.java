@@ -1,9 +1,11 @@
 package me.niravpradhan.data.entities;
 
 import javax.persistence.Column;
+import javax.persistence.MappedSuperclass;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
+@MappedSuperclass
 public abstract class Investment implements Serializable {
 
     private static final long serialVersionUID = 1L;
