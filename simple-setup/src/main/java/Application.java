@@ -3,9 +3,13 @@ import me.niravpradhan.data.entities.Account;
 import me.niravpradhan.data.entities.Address;
 import me.niravpradhan.data.entities.Bank;
 import me.niravpradhan.data.entities.Credential;
+import me.niravpradhan.data.entities.Currency;
+import me.niravpradhan.data.entities.Market;
 import me.niravpradhan.data.entities.Transaction;
 import me.niravpradhan.data.entities.User;
+import me.niravpradhan.data.entities.ids.CurrencyId;
 import org.hibernate.Session;
+import org.hibernate.SessionFactory;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -15,25 +19,36 @@ import java.util.Arrays;
 public class Application {
 
     public static void main(String[] args) {
-        Session session = HibernateUtil.getSessionFactory().openSession();
-        org.hibernate.Transaction transaction = session.beginTransaction();
-        try {
-            Bank bank = session.get(Bank.class, 1L);
-            bank.setName("Something Different");
-            System.out.println("Calling Flush");
-            session.flush();
+        SessionFactory factory = null;
+        Session session = null;
+        org.hibernate.Transaction tx = null;
 
-            bank.getAddress().setAddressLine1("Another Address Line");
-            Bank bank2 = session.get(Bank.class, 2L);
-            bank2.setName("Bank Of Baroda");
-            System.out.println("Calling commit");
-            transaction.commit();
+        try {
+            factory = HibernateUtil.getSessionFactory();
+            session = factory.openSession();
+            tx = session.beginTransaction();
+
+            Currency currency = session.load(Currency.class, new CurrencyId("RUPEE", "INDIA"));
+
+            Market market = new Market();
+            market.setMarketName("Bombay Stock Exchange");
+            market.setCurrency(currency);
+
+            currency.getMarkets().add(market);
+
+            session.save(market);
+
+            tx.commit();
+
+            Currency currency2 = market.getCurrency();
+            System.out.println("SYMBOL: " + currency2.getSymbol());
+
         } catch (Exception e) {
-            transaction.rollback();
+            tx.rollback();
             e.printStackTrace();
         } finally {
             session.close();
-            HibernateUtil.getSessionFactory().close();
+            factory.close();
         }
     }
 

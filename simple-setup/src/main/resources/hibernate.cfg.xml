@@ -24,6 +24,8 @@
         <mapping class="me.niravpradhan.data.entities.Transaction"/>
         <mapping class="me.niravpradhan.data.entities.Budget"/>
         <mapping class="me.niravpradhan.data.entities.TimeTest"/>
+        <mapping class="me.niravpradhan.data.entities.Currency"/>
+        <mapping class="me.niravpradhan.data.entities.Market"/>
 
     </session-factory>
 
