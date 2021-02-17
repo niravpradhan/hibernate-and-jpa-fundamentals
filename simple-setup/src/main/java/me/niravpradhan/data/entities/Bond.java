@@ -10,7 +10,6 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "bond")
 public class Bond extends Investment {
 
     private static final long serialVersionUID = 1L;

@@ -5,7 +5,9 @@ import java.io.Serializable;
 import java.time.LocalDateTime;
 
 @Entity
-@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@DiscriminatorColumn(name = "INVESTMENT_TYPE")
+@Table(name = "investment")
 public abstract class Investment implements Serializable {
 
     private static final long serialVersionUID = 1L;

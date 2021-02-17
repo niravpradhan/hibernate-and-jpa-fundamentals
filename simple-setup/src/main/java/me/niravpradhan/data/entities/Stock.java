@@ -9,7 +9,6 @@ import javax.persistence.Table;
 import java.math.BigDecimal;
 
 @Entity
-@Table(name = "stock")
 public class Stock extends Investment {
 
     private static final long serialVersionUID = 1L;
