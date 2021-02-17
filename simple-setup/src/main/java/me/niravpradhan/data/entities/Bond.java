@@ -15,11 +15,6 @@ public class Bond extends Investment {
 
     private static final long serialVersionUID = 1L;
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "BOND_ID")
-    private Long bondId;
-
     @Column(name = "VALUE")
     private BigDecimal value;
 
@@ -29,13 +24,6 @@ public class Bond extends Investment {
     @Column(name = "MATURITY_DATE")
     private LocalDateTime maturityDate;
 
-    public Long getBondId() {
-        return bondId;
-    }
-
-    public void setBondId(Long bondId) {
-        this.bondId = bondId;
-    }
     public BigDecimal getValue() {
         return value;
     }

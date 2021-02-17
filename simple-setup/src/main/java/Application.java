@@ -1,6 +1,5 @@
 import me.niravpradhan.data.HibernateUtil;
 import me.niravpradhan.data.entities.*;
-import me.niravpradhan.data.entities.ids.CurrencyId;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 
@@ -17,17 +16,34 @@ public class Application {
         org.hibernate.Transaction tx = null;
 
         try {
+
             factory = HibernateUtil.getSessionFactory();
             session = factory.openSession();
             tx = session.beginTransaction();
 
+            Portfolio portfolio = new Portfolio();
+            portfolio.setName("First Investments");
+
             Stock stock = createStock();
-            session.save(stock);
+            stock.setPortfolio(portfolio);
 
             Bond bond = createBond();
+            bond.setPortfolio(portfolio);
+
+            portfolio.getInvestements().add(stock);
+            portfolio.getInvestements().add(bond);
+
+            session.save(stock);
             session.save(bond);
 
             tx.commit();
+
+            Portfolio dbPortfolio = (Portfolio) session.get(Portfolio.class, portfolio.getPortfolioId());
+            session.refresh(dbPortfolio);
+
+            for (Investment i : dbPortfolio.getInvestements()) {
+                System.out.println(i.getName());
+            }
 
         } catch (Exception e) {
             tx.rollback();

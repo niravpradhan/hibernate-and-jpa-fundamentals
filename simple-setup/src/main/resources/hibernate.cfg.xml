@@ -28,6 +28,7 @@
         <mapping class="me.niravpradhan.data.entities.Market"/>
         <mapping class="me.niravpradhan.data.entities.Bond"/>
         <mapping class="me.niravpradhan.data.entities.Stock"/>
+        <mapping class="me.niravpradhan.data.entities.Portfolio"/>
 
     </session-factory>
 

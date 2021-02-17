@@ -1,14 +1,21 @@
 package me.niravpradhan.data.entities;
 
-import javax.persistence.Column;
-import javax.persistence.MappedSuperclass;
+import javax.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
-@MappedSuperclass
+@Entity
+@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 public abstract class Investment implements Serializable {
 
     private static final long serialVersionUID = 1L;
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.TABLE, generator = "key_generator")
+    @TableGenerator(table = "ifinances_keys", pkColumnName = "PK_NAME",
+            valueColumnName = "PK_VALUE", name = "key_generator")
+    @Column(name = "INVESTMENT_ID")
+    private Long investmentId;
 
     @Column(name = "NAME")
     private String name;
@@ -18,6 +25,10 @@ public abstract class Investment implements Serializable {
 
     @Column(name = "PURCHASE_DATE")
     private LocalDateTime purchaseDate;
+
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "PORTFOLIO_ID")
+    private Portfolio portfolio;
 
     public String getName() {
         return name;
@@ -41,5 +52,21 @@ public abstract class Investment implements Serializable {
 
     public void setPurchaseDate(LocalDateTime purchaseDate) {
         this.purchaseDate = purchaseDate;
+    }
+
+    public Long getInvestmentId() {
+        return investmentId;
+    }
+
+    public void setInvestmentId(Long investmentId) {
+        this.investmentId = investmentId;
+    }
+
+    public Portfolio getPortfolio() {
+        return portfolio;
+    }
+
+    public void setPortfolio(Portfolio portfolio) {
+        this.portfolio = portfolio;
     }
 }
