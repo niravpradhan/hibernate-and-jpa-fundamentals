@@ -1,13 +1,5 @@
 import me.niravpradhan.data.HibernateUtil;
-import me.niravpradhan.data.entities.Account;
-import me.niravpradhan.data.entities.AccountType;
-import me.niravpradhan.data.entities.Address;
-import me.niravpradhan.data.entities.Bank;
-import me.niravpradhan.data.entities.Credential;
-import me.niravpradhan.data.entities.Currency;
-import me.niravpradhan.data.entities.Market;
-import me.niravpradhan.data.entities.Transaction;
-import me.niravpradhan.data.entities.User;
+import me.niravpradhan.data.entities.*;
 import me.niravpradhan.data.entities.ids.CurrencyId;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -29,13 +21,13 @@ public class Application {
             session = factory.openSession();
             tx = session.beginTransaction();
 
-            Account account = createNewAccount();
-            session.save(account);
+            Stock stock = createStock();
+            session.save(stock);
+
+            Bond bond = createBond();
+            session.save(bond);
 
             tx.commit();
-
-            Account dbAccount = session.get(Account.class, account.getAccountId());
-            System.out.println("Account Type: " + dbAccount.getAccountType());
 
         } catch (Exception e) {
             tx.rollback();
@@ -150,4 +142,28 @@ public class Application {
         return account;
     }
 
+    private static Bond createBond() {
+        Bond bond = new Bond();
+
+        bond.setName("GOV Bond");
+        bond.setIssuer("Indian Government");
+        bond.setPurchaseDate(LocalDateTime.now());
+        bond.setValue(new BigDecimal("10000.00"));
+        bond.setInterestRate(new BigDecimal("2.00"));
+        bond.setMaturityDate(LocalDateTime.now());
+
+        return bond;
+    }
+
+    private static Stock createStock() {
+        Stock stock = new Stock();
+
+        stock.setName("Reliance Stock");
+        stock.setIssuer("Reliance Company");
+        stock.setPurchaseDate(LocalDateTime.now());
+        stock.setSharePrice(new BigDecimal("10000.00"));
+        stock.setQuantity(100L);
+
+        return stock;
+    }
 }

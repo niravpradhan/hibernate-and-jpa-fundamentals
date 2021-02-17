@@ -7,8 +7,6 @@
         <!-- Database connection settings -->
         <property name="connection.driver_class">com.mysql.cj.jdbc.Driver</property>
         <property name="connection.url">jdbc:mysql://mysqlcluster26.registeredsite.com:3306/ifinances</property>
-        <property name="connection.username">ifdbuser</property>
-        <property name="connection.password">MkP1978786</property>
 
         <!-- SQL dialect -->
         <property name="dialect">org.hibernate.dialect.MySQL5Dialect</property>
@@ -26,6 +24,8 @@
         <mapping class="me.niravpradhan.data.entities.TimeTest"/>
         <mapping class="me.niravpradhan.data.entities.Currency"/>
         <mapping class="me.niravpradhan.data.entities.Market"/>
+        <mapping class="me.niravpradhan.data.entities.Bond"/>
+        <mapping class="me.niravpradhan.data.entities.Stock"/>
 
     </session-factory>
 
