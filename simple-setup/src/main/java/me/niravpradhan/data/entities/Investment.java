@@ -13,9 +13,10 @@ public abstract class Investment implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.TABLE, generator = "key_generator")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    /*@GeneratedValue(strategy = GenerationType.TABLE, generator = "key_generator")
     @TableGenerator(table = "ifinances_keys", pkColumnName = "PK_NAME",
-            valueColumnName = "PK_VALUE", name = "key_generator")
+            valueColumnName = "PK_VALUE", name = "key_generator")*/
     @Column(name = "INVESTMENT_ID")
     private Long investmentId;
 
