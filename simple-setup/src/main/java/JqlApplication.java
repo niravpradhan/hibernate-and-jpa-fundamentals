@@ -33,17 +33,11 @@ public class JqlApplication {
             tx = em.getTransaction();
             tx.begin();
 
-            Query query = em.createQuery("select distinct t.account.name, "
-                    + "concat(concat(t.account.bank.name, ' '),t.account.bank.address.state)"
-                    + " from Transaction t"
-                    + " where t.amount > 500 and t.transactionType = 'Deposit'");
+            TypedQuery<Account> query = em.createNamedQuery("Account.byLargeAmounts", Account.class);
+            query.setParameter("amount", new BigDecimal("500.00"));
+            List<Account> accounts = query.getResultList();
 
-            List<Object[]> accounts = query.getResultList();
-
-            accounts.forEach((Object[] a) -> {
-                System.out.println(a[0]);
-                System.out.println(a[1]);
-            });
+            accounts.forEach(a -> System.out.println(a.getName()));
 
             tx.commit();
         } catch (Exception e) {

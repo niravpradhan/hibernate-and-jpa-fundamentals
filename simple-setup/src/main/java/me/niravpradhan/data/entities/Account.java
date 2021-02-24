@@ -10,6 +10,10 @@ import java.util.Set;
 
 @Entity
 @Table(name = "account")
+@NamedQueries({
+    @NamedQuery(name = "Account.byLargeAmounts", query = "select distinct t.account from Transaction t " +
+        "where t.amount > :amount and lower(t.transactionType) = 'deposit'")
+})
 public class Account extends BaseEntity {
 
     private static final long serialVersionUID = 1L;

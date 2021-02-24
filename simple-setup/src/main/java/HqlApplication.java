@@ -2,6 +2,7 @@ import me.niravpradhan.data.HibernateUtil;
 import me.niravpradhan.data.entities.*;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.query.NativeQuery;
 import org.hibernate.query.Query;
 
 import java.math.BigDecimal;
@@ -22,7 +23,8 @@ public class HqlApplication {
             session = factory.openSession();
             tx = session.beginTransaction();
 
-            Query query = session.createQuery("select distinct t.account from Transaction t where t.amount > 500 and lower(t.transactionType) = 'deposit'");
+            Query query = session.getNamedQuery("Account.byLargeAmounts");
+            query.setParameter("amount", new BigDecimal("500.00"));
             List<Account> accounts = query.list();
 
             accounts.forEach(a -> System.out.println(a.getName()));
