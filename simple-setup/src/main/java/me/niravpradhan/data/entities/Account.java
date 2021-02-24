@@ -50,7 +50,7 @@ public class Account extends BaseEntity {
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "account")
     private List<Transaction> transactions = new ArrayList<>();
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "BANK_ID")
     private Bank bank;
 

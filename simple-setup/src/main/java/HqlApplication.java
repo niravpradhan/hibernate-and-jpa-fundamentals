@@ -27,7 +27,11 @@ public class HqlApplication {
             query.setParameter("amount", new BigDecimal("500.00"));
             List<Account> accounts = query.list();
 
-            accounts.forEach(a -> System.out.println(a.getName()));
+            System.out.println("Query is executed");
+            accounts.forEach(a -> {
+                System.out.println(a.getName());
+                System.out.println(a.getBank().getName());
+            });
 
             tx.commit();
         } catch (Exception e) {
