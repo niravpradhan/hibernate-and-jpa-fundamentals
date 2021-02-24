@@ -2,13 +2,15 @@ import me.niravpradhan.data.HibernateUtil;
 import me.niravpradhan.data.entities.*;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.query.Query;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Arrays;
+import java.util.List;
 
-public class Application {
+public class HqlApplication {
 
     public static void main(String[] args) {
         SessionFactory factory = null;
@@ -16,35 +18,16 @@ public class Application {
         org.hibernate.Transaction tx = null;
 
         try {
-
             factory = HibernateUtil.getSessionFactory();
             session = factory.openSession();
             tx = session.beginTransaction();
 
-            Portfolio portfolio = new Portfolio();
-            portfolio.setName("First Investments");
+            Query query = session.createQuery("select t from Transaction t");
+            List<Transaction> transactions = query.list();
 
-            Stock stock = createStock();
-            stock.setPortfolio(portfolio);
-
-            Bond bond = createBond();
-            bond.setPortfolio(portfolio);
-
-            portfolio.getInvestements().add(stock);
-            portfolio.getInvestements().add(bond);
-
-            session.save(stock);
-            session.save(bond);
+            transactions.forEach(t -> System.out.println(t.getTitle()));
 
             tx.commit();
-
-            Portfolio dbPortfolio = (Portfolio) session.get(Portfolio.class, portfolio.getPortfolioId());
-            session.refresh(dbPortfolio);
-
-            for (Investment i : dbPortfolio.getInvestements()) {
-                System.out.println(i.getName());
-            }
-
         } catch (Exception e) {
             tx.rollback();
             e.printStackTrace();
