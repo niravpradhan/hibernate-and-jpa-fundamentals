@@ -40,10 +40,10 @@ public class JqlApplication {
 
             List<Object[]> accounts = query.getResultList();
 
-            for(Object[] a:accounts){
+            accounts.forEach((Object[] a) -> {
                 System.out.println(a[0]);
                 System.out.println(a[1]);
-            }
+            });
 
             tx.commit();
         } catch (Exception e) {
