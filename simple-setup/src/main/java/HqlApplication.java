@@ -22,14 +22,10 @@ public class HqlApplication {
             session = factory.openSession();
             tx = session.beginTransaction();
 
-            /*Query query = session.createQuery("select t from Transaction t");
-            List<Transaction> transactions = query.list();*/
+            Query query = session.createQuery("select distinct t.account from Transaction t where t.amount > 500 and t.transactionType = 'Deposit'");
+            List<Account> accounts = query.list();
 
-            Query<Transaction> query = session.createQuery("select t from Transaction  t where t.amount > ?1");
-            query.setParameter(1, new BigDecimal("10.00"));
-            List<Transaction> transactions = query.list();
-
-            transactions.forEach(t -> System.out.println(t.getTitle()));
+            accounts.forEach(a -> System.out.println(a.getName()));
 
             tx.commit();
         } catch (Exception e) {

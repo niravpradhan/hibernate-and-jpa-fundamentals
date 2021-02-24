@@ -1,4 +1,3 @@
-import me.niravpradhan.data.HibernateUtil;
 import me.niravpradhan.data.entities.Account;
 import me.niravpradhan.data.entities.AccountType;
 import me.niravpradhan.data.entities.Address;
@@ -8,14 +7,11 @@ import me.niravpradhan.data.entities.Credential;
 import me.niravpradhan.data.entities.Stock;
 import me.niravpradhan.data.entities.Transaction;
 import me.niravpradhan.data.entities.User;
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
 import javax.persistence.Persistence;
-import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -36,16 +32,10 @@ public class JqlApplication {
             tx = em.getTransaction();
             tx.begin();
 
-            /*Query query = em.createQuery("from Transaction  t order by t.title");
-            List<Transaction> transactions = query.getResultList();*/
+            TypedQuery<Account> query = em.createQuery("select distinct a from Transaction t join t.account a where t.amount > 500 and t.transactionType = 'Deposit'", Account.class);
+            List<Account> accounts = query.getResultList();
 
-            TypedQuery<Transaction> typedQuery = em.createQuery("from Transaction t where (t.amount between :amount1 and :amount2) and t.transactionType = :transactionType order by t.title", Transaction.class);
-            typedQuery.setParameter("amount1", new BigDecimal("10.00"));
-            typedQuery.setParameter("amount2", new BigDecimal("10000.00"));
-            typedQuery.setParameter("transactionType", "Withdrawl");
-            List<Transaction> transactions = typedQuery.getResultList();
-
-            transactions.forEach(t -> System.out.println(t.getTitle()));
+            accounts.forEach(a -> System.out.println(a.getName()));
 
             tx.commit();
         } catch (Exception e) {
