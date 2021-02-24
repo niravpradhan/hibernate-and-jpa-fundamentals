@@ -30,7 +30,7 @@ public class JqlApplication {
         EntityManager em = null;
         EntityTransaction tx = null;
 
-        try{
+        try {
             factory = Persistence.createEntityManagerFactory("infinite-finances");
             em = factory.createEntityManager();
             tx = em.getTransaction();
@@ -39,7 +39,7 @@ public class JqlApplication {
             /*Query query = em.createQuery("from Transaction  t order by t.title");
             List<Transaction> transactions = query.getResultList();*/
 
-            TypedQuery<Transaction> typedQuery = em.createQuery("from Transaction t order by t.title", Transaction.class);
+            TypedQuery<Transaction> typedQuery = em.createQuery("from Transaction t where (t.amount between 75 and 100) and t.transactionType = 'Withdrawal' order by t.title", Transaction.class);
             List<Transaction> transactions = typedQuery.getResultList();
 
             transactions.forEach(t -> System.out.println(t.getTitle()));
