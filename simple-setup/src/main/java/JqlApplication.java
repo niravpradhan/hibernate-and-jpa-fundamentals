@@ -12,6 +12,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
 import javax.persistence.Persistence;
+import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -32,10 +33,17 @@ public class JqlApplication {
             tx = em.getTransaction();
             tx.begin();
 
-            TypedQuery<Account> query = em.createQuery("select distinct a from Transaction t join t.account a where t.amount > 500 and t.transactionType = 'Deposit'", Account.class);
-            List<Account> accounts = query.getResultList();
+            Query query = em.createQuery("select distinct t.account.name, "
+                    + "concat(concat(t.account.bank.name, ' '),t.account.bank.address.state)"
+                    + " from Transaction t"
+                    + " where t.amount > 500 and t.transactionType = 'Deposit'");
 
-            accounts.forEach(a -> System.out.println(a.getName()));
+            List<Object[]> accounts = query.getResultList();
+
+            for(Object[] a:accounts){
+                System.out.println(a[0]);
+                System.out.println(a[1]);
+            }
 
             tx.commit();
         } catch (Exception e) {

@@ -22,7 +22,7 @@ public class HqlApplication {
             session = factory.openSession();
             tx = session.beginTransaction();
 
-            Query query = session.createQuery("select distinct t.account from Transaction t where t.amount > 500 and t.transactionType = 'Deposit'");
+            Query query = session.createQuery("select distinct t.account from Transaction t where t.amount > 500 and lower(t.transactionType) = 'deposit'");
             List<Account> accounts = query.list();
 
             accounts.forEach(a -> System.out.println(a.getName()));
