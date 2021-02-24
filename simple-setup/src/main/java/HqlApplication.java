@@ -22,7 +22,11 @@ public class HqlApplication {
             session = factory.openSession();
             tx = session.beginTransaction();
 
-            Query query = session.createQuery("select t from Transaction t");
+            /*Query query = session.createQuery("select t from Transaction t");
+            List<Transaction> transactions = query.list();*/
+
+            Query<Transaction> query = session.createQuery("select t from Transaction  t where t.amount > ?1");
+            query.setParameter(1, new BigDecimal("10.00"));
             List<Transaction> transactions = query.list();
 
             transactions.forEach(t -> System.out.println(t.getTitle()));

@@ -39,7 +39,10 @@ public class JqlApplication {
             /*Query query = em.createQuery("from Transaction  t order by t.title");
             List<Transaction> transactions = query.getResultList();*/
 
-            TypedQuery<Transaction> typedQuery = em.createQuery("from Transaction t where (t.amount between 75 and 100) and t.transactionType = 'Withdrawal' order by t.title", Transaction.class);
+            TypedQuery<Transaction> typedQuery = em.createQuery("from Transaction t where (t.amount between :amount1 and :amount2) and t.transactionType = :transactionType order by t.title", Transaction.class);
+            typedQuery.setParameter("amount1", new BigDecimal("10.00"));
+            typedQuery.setParameter("amount2", new BigDecimal("10000.00"));
+            typedQuery.setParameter("transactionType", "Withdrawl");
             List<Transaction> transactions = typedQuery.getResultList();
 
             transactions.forEach(t -> System.out.println(t.getTitle()));
