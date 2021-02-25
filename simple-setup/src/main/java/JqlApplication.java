@@ -16,6 +16,7 @@ import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Path;
 import javax.persistence.criteria.Root;
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -36,19 +37,21 @@ public class JqlApplication {
             tx = em.getTransaction();
             tx.begin();
 
-            CriteriaBuilder criteriaBuilder = em.getCriteriaBuilder();
-            CriteriaQuery<Transaction> criteriaQuery = criteriaBuilder.createQuery(Transaction.class);
+            CriteriaBuilder cb = em.getCriteriaBuilder();
+            CriteriaQuery<Transaction> cq = cb.createQuery(Transaction.class);
 
-            Root<Transaction> root = criteriaQuery.from(Transaction.class);
-            criteriaQuery.orderBy(criteriaBuilder.desc(root.get("title")));
-            criteriaQuery.select(root);
+            Root<Transaction> root = cq.from(Transaction.class);
 
-            TypedQuery<Transaction> typedQuery = em.createQuery(criteriaQuery);
-            typedQuery.setFirstResult(0);
-            typedQuery.setMaxResults(5);
+            Path<BigDecimal> amountPath = root.get("amount");
+            Path<String> transactionTypePath = root.get("transactionType");
+
+            cq.where(cb.and(cb.le(amountPath, new BigDecimal("20.00")),
+                    cb.equal(transactionTypePath, "Withdrawl")));
+
+            TypedQuery<Transaction> typedQuery = em.createQuery(cq);
             List<Transaction> transactions = typedQuery.getResultList();
 
-            transactions.forEach(t -> System.out.println(t.getTitle()));
+            transactions.forEach(t -> System.out.println((t.getTitle())));
 
             tx.commit();
         } catch (Exception e) {

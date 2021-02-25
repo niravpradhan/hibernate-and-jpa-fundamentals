@@ -8,6 +8,8 @@ import org.hibernate.query.Query;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Order;
+import javax.persistence.criteria.Path;
+import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -27,17 +29,20 @@ public class HqlApplication {
             session = factory.openSession();
             tx = session.beginTransaction();
 
-            CriteriaBuilder criteriaBuilder = session.getCriteriaBuilder();
-            CriteriaQuery<Transaction> criteriaQuery = criteriaBuilder.createQuery(Transaction.class);
+            CriteriaBuilder cb = session.getCriteriaBuilder();
+            CriteriaQuery<Transaction> cq = cb.createQuery(Transaction.class);
 
-            Root<Transaction> root = criteriaQuery.from(Transaction.class);
-            criteriaQuery.orderBy(criteriaBuilder.desc(root.get("title")));
-            criteriaQuery.select(root);
+            Root<Transaction> root = cq.from(Transaction.class);
+            Path<BigDecimal> amountPath = root.get("amount");
+            Path<String> transactionTypePath = root.get("transactionType");
+            cq.select(root);
+            cq.where(cb.and(cb.le(amountPath, new BigDecimal("20.00")),
+                    cb.equal(transactionTypePath, "Withdrawl")));
 
-            Query<Transaction> query = session.createQuery(criteriaQuery);
+            Query<Transaction> query = session.createQuery(cq);
             List<Transaction> transactions = query.list();
 
-            transactions.forEach(t -> System.out.println(t.getTitle()));
+            transactions.forEach(t -> System.out.println((t.getTitle())));
 
             tx.commit();
         } catch (Exception e) {
