@@ -14,6 +14,9 @@ import javax.persistence.EntityTransaction;
 import javax.persistence.Persistence;
 import javax.persistence.Query;
 import javax.persistence.TypedQuery;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -33,11 +36,19 @@ public class JqlApplication {
             tx = em.getTransaction();
             tx.begin();
 
-            TypedQuery<Account> query = em.createNamedQuery("Account.byLargeAmounts", Account.class);
-            query.setParameter("amount", new BigDecimal("500.00"));
-            List<Account> accounts = query.getResultList();
+            CriteriaBuilder criteriaBuilder = em.getCriteriaBuilder();
+            CriteriaQuery<Transaction> criteriaQuery = criteriaBuilder.createQuery(Transaction.class);
 
-            accounts.forEach(a -> System.out.println(a.getName()));
+            Root<Transaction> root = criteriaQuery.from(Transaction.class);
+            criteriaQuery.orderBy(criteriaBuilder.desc(root.get("title")));
+            criteriaQuery.select(root);
+
+            TypedQuery<Transaction> typedQuery = em.createQuery(criteriaQuery);
+            typedQuery.setFirstResult(0);
+            typedQuery.setMaxResults(5);
+            List<Transaction> transactions = typedQuery.getResultList();
+
+            transactions.forEach(t -> System.out.println(t.getTitle()));
 
             tx.commit();
         } catch (Exception e) {

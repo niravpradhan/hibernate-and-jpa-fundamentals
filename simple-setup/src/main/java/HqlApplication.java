@@ -5,6 +5,10 @@ import org.hibernate.SessionFactory;
 import org.hibernate.query.NativeQuery;
 import org.hibernate.query.Query;
 
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Order;
+import javax.persistence.criteria.Root;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -23,15 +27,17 @@ public class HqlApplication {
             session = factory.openSession();
             tx = session.beginTransaction();
 
-            Query query = session.getNamedQuery("Account.byLargeAmounts");
-            query.setParameter("amount", new BigDecimal("500.00"));
-            List<Account> accounts = query.list();
+            CriteriaBuilder criteriaBuilder = session.getCriteriaBuilder();
+            CriteriaQuery<Transaction> criteriaQuery = criteriaBuilder.createQuery(Transaction.class);
 
-            System.out.println("Query is executed");
-            accounts.forEach(a -> {
-                System.out.println(a.getName());
-                System.out.println(a.getBank().getName());
-            });
+            Root<Transaction> root = criteriaQuery.from(Transaction.class);
+            criteriaQuery.orderBy(criteriaBuilder.desc(root.get("title")));
+            criteriaQuery.select(root);
+
+            Query<Transaction> query = session.createQuery(criteriaQuery);
+            List<Transaction> transactions = query.list();
+
+            transactions.forEach(t -> System.out.println(t.getTitle()));
 
             tx.commit();
         } catch (Exception e) {
